@@ -47,7 +47,6 @@ namespace bookApiWeb.Services.Users
 
         public string generateJwtToken(User user)
         {
-            var sss = user.Email;
             //generate token that us valid 7 day
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -58,7 +57,7 @@ namespace bookApiWeb.Services.Users
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescription);
-
+            var minh = 0;
             return tokenHandler.WriteToken(token) ;
         }
 

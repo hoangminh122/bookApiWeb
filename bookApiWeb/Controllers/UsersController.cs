@@ -31,12 +31,12 @@ namespace bookApiWeb.Controllers
         public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
             var ssss = loginRequest.Email;
-            var response = await _userRepository.Authencate(loginRequest);
-            if(response == null)
+            string response = await _userRepository.Authencate(loginRequest);
+            if (response == null)
             {
                 return BadRequest(new { message = "Username or password is incorrect." });
             }
-            return Ok(response);
+            return Ok(new { token = response });
         }
 
 
