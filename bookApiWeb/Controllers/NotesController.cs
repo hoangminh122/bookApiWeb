@@ -1,4 +1,5 @@
-﻿using bookApiWeb.Models;
+﻿using bookApiWeb.Configurations.Jwt;
+using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,8 @@ namespace bookApiWeb.Controllers
         /// <summary>
         /// Get All Note
         /// </summary>
+        /// 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get()
         {

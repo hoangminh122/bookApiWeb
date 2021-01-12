@@ -5,11 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using bookApiWeb.Configurations.Jwt;
 using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Repositories.Students;
+using bookApiWeb.Repositories.Users;
 using bookApiWeb.Services;
 using bookApiWeb.Services.Students;
+using bookApiWeb.Services.Users;
 using bookApiWeb.Shares.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -42,8 +45,12 @@ namespace bookApiWeb
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
 
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddTransient<IUserRepository, UserServices>();
             services.AddTransient<INoteRepository, NotesServices>();
             services.AddTransient<IStudentRepository, StudentServices>();
+          
             services.AddMvc();
                 //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 //.ConfigureApiBehaviorOptions(options =>
@@ -87,6 +94,7 @@ namespace bookApiWeb
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
 
             //enable middleware to serve
             app.UseSwagger();
@@ -134,9 +142,23 @@ namespace bookApiWeb
             //    });
             //
 
+           
             app.ConfigureExceptionHandler(env);
+           
             app.UseHttpsRedirection();
+            app.UseMiddleware<JwtMiddleware>();
+
             app.UseMvc();
+
+            //app.UseCors(x=>x
+            //.AllowAnyOrigin()
+            //.AllowAnyMethod()
+            //.AllowAnyHeader()
+            //);
+            //app.UseMiddleware<JwtMiddleware>();
+            //app.UseMigrationsEndPoint();
+
+
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync("asdahsgd");

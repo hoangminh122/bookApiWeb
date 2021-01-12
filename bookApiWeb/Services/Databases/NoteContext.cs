@@ -1,4 +1,5 @@
 ﻿using bookApiWeb.Models.Students;
+using bookApiWeb.Models.Users;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
@@ -46,6 +47,13 @@ namespace bookApiWeb.Models
             get
             {
                 return _database.GetCollection<NoteImage>("NoteImage");
+            }
+        }
+        public IMongoCollection<User> Users
+        {
+            get
+            {
+                return _database.GetCollection<User>("User");
             }
         }
 

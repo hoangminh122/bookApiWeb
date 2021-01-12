@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace bookApiWeb.Services.Users
+namespace bookApiWeb.Configurations.Jwt
 {
-    public class UserService
+    public class AppSettings
     {
+        public string Secret { get; set; }
     }
 }
