@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Repositories.Students;
+using bookApiWeb.Repositories.Users;
 using bookApiWeb.Services;
 using bookApiWeb.Services.Students;
+using bookApiWeb.Services.Users;
 using bookApiWeb.Shares.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -41,9 +43,10 @@ namespace bookApiWeb
             //    options.CheckConsentNeeded = context => true;
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
-
+              services.AddTransient<IUserRepository, UserServices>();
             services.AddTransient<INoteRepository, NotesServices>();
             services.AddTransient<IStudentRepository, StudentServices>();
+          
             services.AddMvc();
                 //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 //.ConfigureApiBehaviorOptions(options =>
