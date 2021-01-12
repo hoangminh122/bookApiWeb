@@ -9,7 +9,7 @@ namespace bookApiWeb.Repositories.Users
 {
     public interface IUserRepository
     {
-        Task<User> Authencate(LoginRequest request);
+        Task<string> Authencate(LoginRequest request);
         Task<bool> Register(RegisterRequest request);
 
         Task<IEnumerable<User>> GetAllUsers();

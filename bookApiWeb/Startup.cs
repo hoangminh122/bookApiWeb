@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using bookApiWeb.Configurations.Jwt;
 using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Repositories.Students;
@@ -43,7 +44,10 @@ namespace bookApiWeb
             //    options.CheckConsentNeeded = context => true;
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
-              services.AddTransient<IUserRepository, UserServices>();
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddTransient<IUserRepository, UserServices>();
             services.AddTransient<INoteRepository, NotesServices>();
             services.AddTransient<IStudentRepository, StudentServices>();
           

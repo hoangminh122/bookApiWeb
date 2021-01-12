@@ -27,13 +27,19 @@ namespace bookApiWeb.Controllers
             return Ok(await _userRepository.GetAllUsers());
         }
 
-        [HttpPost]
-        public async Task<User> Authenticate(LoginRequest loginRequest)
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
-           // return new User();
-            var result = await _userRepository.Authencate(loginRequest);
-            return result;
+            var ssss = loginRequest.Email;
+            var response = await _userRepository.Authencate(loginRequest);
+            if(response == null)
+            {
+                return BadRequest(new { message = "Username or password is incorrect." });
+            }
+            return Ok(response);
         }
+
+
 
     }
 }
