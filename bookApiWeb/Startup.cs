@@ -95,6 +95,7 @@ namespace bookApiWeb
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
+
             //enable middleware to serve
             app.UseSwagger();
             app.UseSwaggerUI((c)=>
@@ -141,9 +142,23 @@ namespace bookApiWeb
             //    });
             //
 
+           
             app.ConfigureExceptionHandler(env);
+           
             app.UseHttpsRedirection();
+            app.UseMiddleware<JwtMiddleware>();
+
             app.UseMvc();
+
+            //app.UseCors(x=>x
+            //.AllowAnyOrigin()
+            //.AllowAnyMethod()
+            //.AllowAnyHeader()
+            //);
+            //app.UseMiddleware<JwtMiddleware>();
+            //app.UseMigrationsEndPoint();
+
+
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync("asdahsgd");
