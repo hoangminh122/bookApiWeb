@@ -72,9 +72,16 @@ namespace bookApiWeb.Services.Users
             }
         }
 
-        public Task<User> GetUser(string id)
+        public User GetUser(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _context.Users.Find(user => user.UserId == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<bool> Register(RegisterRequest request)

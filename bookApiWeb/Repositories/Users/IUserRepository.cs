@@ -13,6 +13,6 @@ namespace bookApiWeb.Repositories.Users
         Task<bool> Register(RegisterRequest request);
 
         Task<IEnumerable<User>> GetAllUsers();
-        Task<User> GetUser(string id);
+        User GetUser(string id);
     }
 }

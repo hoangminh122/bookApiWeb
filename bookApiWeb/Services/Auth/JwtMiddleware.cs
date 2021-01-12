@@ -43,7 +43,7 @@ namespace bookApiWeb.Configurations.Jwt
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
@@ -53,7 +53,7 @@ namespace bookApiWeb.Configurations.Jwt
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == "id").Value.ToString();
                 //parse infor user in content
-                context.Items["User"] = userService.GetUser(userId);
+                context.Items["User"] =  userService.GetUser(userId);
 
             //}
             //catch(Exception ex)
@@ -62,10 +62,7 @@ namespace bookApiWeb.Configurations.Jwt
             //    //
             //}
         }
-        private SecurityKey SymmetricSecurityKey(byte[] key)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 
 }
