@@ -79,6 +79,26 @@ namespace bookApiWeb
                     Description = "AAAAAAAA"
 
                 });
+
+                //bearer
+                c.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
+                {
+
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                {
+                    new OpenApiSecurityScheme{
+                        Reference = new OpenApiReference{
+                            Id = "Bearer", //The name of the previously defined security scheme.
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },new List<string>()
+                }
+});
+
                 //Set the comment path for the swagger JSON AND UI
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);

@@ -13,7 +13,7 @@ namespace bookApiWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NotesController :ControllerBase
+    public class NotesController : ControllerBase
     {
         private readonly INoteRepository _noteRepository;
 
@@ -30,7 +30,7 @@ namespace bookApiWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-           
+
             //throw new Exception();
             return Ok(await _noteRepository.GetAllNotes());
         }
@@ -41,12 +41,12 @@ namespace bookApiWeb.Controllers
             Note note = new Note
             {
                 Id = newNote.Id,
-                Body =  newNote.Body
+                Body = newNote.Body
             };
 
             var noteResult = await _noteRepository.AddNote(note);
             if (noteResult != null)
-                return Ok(noteResult);
+                return Created(nameof(noteResult), newNote);
             else
                 return NotFound();
 
@@ -56,7 +56,7 @@ namespace bookApiWeb.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var note = await _noteRepository.GetNote(id);
-            if(note == null)
+            if (note == null)
             {
                 return NotFound();
             }
@@ -68,24 +68,23 @@ namespace bookApiWeb.Controllers
         {
             //fix no clean
             var note = await _noteRepository.GetNote(id);
-            if(note == null)
+            if (note == null)
             {
                 return NotFound();
             }
-             await _noteRepository.RemoveNote(id);
-            return NoContent();
+            await _noteRepository.RemoveNote(id);
+            return Ok(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(string id,Note newNote)
+        public async Task<ActionResult> Put(string id, Note newNote)
         {
-            
-            await _noteRepository.UpdateNote(id, newNote);
-           
-    
-            return Ok("{ success:1,status:201}");
+            var result = await _noteRepository.UpdateNote(id, newNote);
+            if (result)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
-
-
     }
 }

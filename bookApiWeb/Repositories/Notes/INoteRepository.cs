@@ -14,7 +14,7 @@ namespace bookApiWeb.Repositories
         Task<IEnumerable<Note>> GetNote(string bodyText, DateTime updatedFrom, long headerSizeLimit);
         Task<Note> AddNote(Note item);
         Task<bool> RemoveNote(string id);
-        Task UpdateNote(string id, Note item);
+        Task<bool> UpdateNote(string id, Note item);
         Task<bool> UpdateNoteDocument(string id, string body);
         Task<bool> RemoveAllNotes();
 

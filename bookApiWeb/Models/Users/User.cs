@@ -20,6 +20,7 @@ namespace bookApiWeb.Models.Users
         public string Email { get; set; }
         [BsonElement("password")]
         public string Password { get; set; }
+
         [BsonElement("connected")]
         public bool IsConnected { get; set; } = false;
 

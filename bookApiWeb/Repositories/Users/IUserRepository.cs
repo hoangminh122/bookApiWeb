@@ -14,5 +14,7 @@ namespace bookApiWeb.Repositories.Users
 
         Task<IEnumerable<User>> GetAllUsers();
         User GetUser(string id);
+        Task<User> GetUserAsync(string id);
+        Task<User> GetUserByEmailAsync(string email);
     }
 }
