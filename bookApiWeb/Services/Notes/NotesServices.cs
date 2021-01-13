@@ -3,6 +3,7 @@ using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
 using bookApiWeb.Services.Notes.dto;
 using bookApiWeb.Shares.Filters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -41,8 +42,8 @@ namespace bookApiWeb.Services
                 #endregion
                 await _context.Notes.InsertOneAsync(item);
                 return item;
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -50,13 +51,17 @@ namespace bookApiWeb.Services
             }
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotes(NoteQueryInput filter)
+        public async Task<PagedResponse<List<Note>>> GetAllNotes(NoteQueryInput filter)
         {
             try
             {
-                var validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
+                var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-                return await _context.Notes.Find(_ => true).Skip((validFilter.PageNumber-1)*validFilter.PageSize).Limit(validFilter.PageSize).ToListAsync();
+                return new PagedResponse<List<Note>>(
+                    await _context.Notes.Find(_ => true)
+                        .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                            .Limit(validFilter.PageSize)
+                                .ToListAsync(), filter.PageNumber, filter.PageSize);
             }
             catch (Exception ex)
             {
@@ -95,10 +100,10 @@ namespace bookApiWeb.Services
                 DeleteResult actionResult =
                     await _context.Notes.DeleteOneAsync(
                         Builders<Note>.Filter.Eq("_id", idObject));
-                return actionResult.IsAcknowledged 
+                return actionResult.IsAcknowledged
                         && actionResult.DeletedCount > 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -107,7 +112,7 @@ namespace bookApiWeb.Services
         public async Task<bool> UpdateNote(string id, Note item)
         {
             try
-            { 
+            {
                 #region test
                 //find item by id
                 //var noteFind = await _context.Notes.Find(note => note.InternalId == idObject).FirstOrDefaultAsync();
@@ -147,8 +152,8 @@ namespace bookApiWeb.Services
                 //    UserId = noteFind.UserId
                 //};
                 #endregion
-                var result =  await _context.Notes.ReplaceOneAsync(n => n.InternalId == id, item);
-                if(result != null)
+                var result = await _context.Notes.ReplaceOneAsync(n => n.InternalId == id, item);
+                if (result != null)
                     return true;
                 return false;
                 #region

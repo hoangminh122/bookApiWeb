@@ -3,6 +3,7 @@ using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
 using bookApiWeb.Services.Notes.dto;
+using bookApiWeb.Shares.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -63,7 +64,7 @@ namespace bookApiWeb.Controllers
             {
                 return NotFound();
             }
-            return Ok(note);
+            return Ok(new Response<Note>(note));
         }
 
         [HttpDelete("{id}")]
