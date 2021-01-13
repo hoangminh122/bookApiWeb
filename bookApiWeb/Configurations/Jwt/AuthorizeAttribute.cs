@@ -16,7 +16,6 @@ namespace bookApiWeb.Configurations.Jwt
         {
             var user = (User)context.HttpContext.Items["User"];
           //  var minh = user.Email;
-           var sss = 0;
             if(user == null)
             {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
