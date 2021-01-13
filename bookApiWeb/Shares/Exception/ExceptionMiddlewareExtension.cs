@@ -9,7 +9,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace bookApiWeb.Shares.Filters
+namespace bookApiWeb.Shares.Exeptions
 {
     class ErrorHandler
     {

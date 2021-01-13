@@ -1,6 +1,8 @@
 ﻿using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
+using bookApiWeb.Services.Notes.dto;
+using bookApiWeb.Shares.Filters;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -48,11 +50,13 @@ namespace bookApiWeb.Services
             }
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotes()
+        public async Task<IEnumerable<Note>> GetAllNotes(NoteQueryInput filter)
         {
             try
             {
-                return await _context.Notes.AsQueryable().ToListAsync();
+                var validFilter = new PaginationFilter(filter.PageNumber,filter.PageSize);
+
+                return await _context.Notes.Find(_ => true).Skip((validFilter.PageNumber-1)*validFilter.PageSize).Limit(validFilter.PageSize).ToListAsync();
             }
             catch (Exception ex)
             {

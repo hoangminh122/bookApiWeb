@@ -2,6 +2,7 @@
 using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
+using bookApiWeb.Services.Notes.dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -31,11 +32,9 @@ namespace bookApiWeb.Controllers
         //[Authorize]
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] NoteQueryInput filter)
         {
-
-            //throw new Exception();
-            return Ok(await _noteRepository.GetAllNotes());
+            return Ok(await _noteRepository.GetAllNotes(filter));
         }
 
         [AllowAnonymous]
