@@ -2,6 +2,9 @@
 using bookApiWeb.Models;
 using bookApiWeb.Repositories;
 using bookApiWeb.Services.dto;
+using bookApiWeb.Services.Notes.dto;
+using bookApiWeb.Shares.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System;
@@ -12,6 +15,7 @@ using System.Threading.Tasks;
 namespace bookApiWeb.Controllers
 {
     [Route("api/[controller]")]
+   // [Configurations.Jwt.Authorize]
     [ApiController]
     public class NotesController : ControllerBase
     {
@@ -26,15 +30,15 @@ namespace bookApiWeb.Controllers
         /// Get All Note
         /// </summary>
         /// 
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] NoteQueryInput filter)
         {
-
-            //throw new Exception();
-            return Ok(await _noteRepository.GetAllNotes());
+            return Ok(await _noteRepository.GetAllNotes(filter));
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post(NoteRequest newNote)
         {
@@ -60,7 +64,7 @@ namespace bookApiWeb.Controllers
             {
                 return NotFound();
             }
-            return Ok(note);
+            return Ok(new Response<Note>(note));
         }
 
         [HttpDelete("{id}")]

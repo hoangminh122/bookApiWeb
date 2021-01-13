@@ -13,7 +13,11 @@ using bookApiWeb.Repositories.Users;
 using bookApiWeb.Services;
 using bookApiWeb.Services.Students;
 using bookApiWeb.Services.Users;
-using bookApiWeb.Shares.Filters;
+using bookApiWeb.Services.Users.dto;
+using bookApiWeb.Shares.Exceptions;
+using bookApiWeb.Shares.Exeptions;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -51,16 +55,19 @@ namespace bookApiWeb
             services.AddTransient<INoteRepository, NotesServices>();
             services.AddTransient<IStudentRepository, StudentServices>();
           
-            services.AddMvc();
-                //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                //.ConfigureApiBehaviorOptions(options =>
-                //{
-                //    options.InvalidModelStateResponseFactory = context =>
-                //    {
-                //        var problems = new CustomBadRequest(context);
-                //        return new BadRequestObjectResult(problems);
-                //    };
-                //});
+            services.AddMvc()
+                .AddFluentValidation();
+
+            services.AddTransient<IValidator<LoginRequest>,LoginRequestValidator>();
+            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            //.ConfigureApiBehaviorOptions(options =>
+            //{
+            //    options.InvalidModelStateResponseFactory = context =>
+            //    {
+            //        var problems = new CustomBadRequest(context);
+            //        return new BadRequestObjectResult(problems);
+            //    };
+            //});
 
             services.Configure<Settings>(options =>
             {
