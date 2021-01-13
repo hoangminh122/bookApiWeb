@@ -100,11 +100,10 @@ namespace bookApiWeb.Services
             }
         }
 
-        public async Task UpdateNote(string id, Note item)
+        public async Task<bool> UpdateNote(string id, Note item)
         {
             try
             { 
-                var idObject = new ObjectId(id);
                 #region test
                 //find item by id
                 //var noteFind = await _context.Notes.Find(note => note.InternalId == idObject).FirstOrDefaultAsync();
@@ -144,7 +143,10 @@ namespace bookApiWeb.Services
                 //    UserId = noteFind.UserId
                 //};
                 #endregion
-                await _context.Notes.ReplaceOneAsync(n => n.InternalId == id, item);
+                var result =  await _context.Notes.ReplaceOneAsync(n => n.InternalId == id, item);
+                if(result != null)
+                    return true;
+                return false;
                 #region
                 //}
                 //else

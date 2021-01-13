@@ -46,7 +46,7 @@ namespace bookApiWeb.Controllers
 
             var noteResult = await _noteRepository.AddNote(note);
             if (noteResult != null)
-                return Ok(noteResult);
+                return Created(nameof(noteResult),newNote);
             else
                 return NotFound();
 
@@ -73,17 +73,18 @@ namespace bookApiWeb.Controllers
                 return NotFound();
             }
              await _noteRepository.RemoveNote(id);
-            return NoContent();
+            return Ok(id);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(string id,Note newNote)
         {
-            
-            await _noteRepository.UpdateNote(id, newNote);
-           
-    
-            return Ok("{ success:1,status:201}");
+            var result = await _noteRepository.UpdateNote(id, newNote);
+            if(result)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
 
 
