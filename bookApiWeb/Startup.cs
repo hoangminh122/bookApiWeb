@@ -16,6 +16,7 @@ using bookApiWeb.Services.Users;
 using bookApiWeb.Services.Users.dto;
 using bookApiWeb.Shares.Exceptions;
 using bookApiWeb.Shares.Exeptions;
+using bookApiWeb.Shares.Swaggers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -86,6 +87,8 @@ namespace bookApiWeb
                     Description = "AAAAAAAA"
 
                 });
+
+                c.OperationFilter<SwaggerFileOperationFilter>();
 
                 //bearer
                 c.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
@@ -176,12 +179,12 @@ namespace bookApiWeb
             app.UseMiddleware<JwtMiddleware>();
 
             app.UseMvc();
-
-            //app.UseCors(x=>x
-            //.AllowAnyOrigin()
-            //.AllowAnyMethod()
-            //.AllowAnyHeader()
-            //);
+            app.UseStaticFiles();
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            );
             //app.UseMiddleware<JwtMiddleware>();
             //app.UseMigrationsEndPoint();
 
