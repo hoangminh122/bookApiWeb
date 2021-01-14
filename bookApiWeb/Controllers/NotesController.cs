@@ -84,7 +84,7 @@ namespace bookApiWeb.Controllers
         public async Task<ActionResult> Put(string id, Note newNote)
         {
             var result = await _noteRepository.UpdateNote(id, newNote);
-            if (result)
+            if (!result)
             {
                 return BadRequest();
             }

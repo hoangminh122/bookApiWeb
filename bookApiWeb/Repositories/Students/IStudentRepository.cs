@@ -1,4 +1,5 @@
 ﻿using bookApiWeb.Models.Students;
+using bookApiWeb.Services.Students.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace bookApiWeb.Repositories.Students
     {
         Task<IEnumerable<Student>> GetAllStudents();
         Task<Student> GetStudent(string id);
-        Task AddStudent(Student item);
+        Task<bool> AddStudent(StudentParam item);
         Task<bool> RemoveStudent(string id);
-        Task UpdateStudent(string id, Student item);
+        Task<bool> UpdateStudent(string id, StudentParam item);
         Task<bool> RemoveAllStudent();
     }
 }

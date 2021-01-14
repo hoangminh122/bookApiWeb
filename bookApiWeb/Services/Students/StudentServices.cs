@@ -3,6 +3,7 @@ using bookApiWeb.Models.Students;
 using bookApiWeb.Repositories.Students;
 using bookApiWeb.Services.Students.dto;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,22 @@ namespace bookApiWeb.Services.Students
             _context = new NoteContext(settings);
         }
 
-        public async Task AddStudent(Student item)
+        public async Task<bool> AddStudent(StudentParam item)
         {
             try
             {
-                await _context.Students.InsertOneAsync(item);
+                var student = new Student()
+                {
+                    LastName = item.LastName,
+                    StudentId = item.StudentId
+                };
+                await _context.Students.InsertOneAsync(student);
+
+                return true;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -44,9 +52,16 @@ namespace bookApiWeb.Services.Students
             }
         }
 
-        public Task<Student> GetStudent(string id)
+        public async Task<Student> GetStudent(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.Students.Find(student => student.InternalId == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<bool> RemoveAllStudent()
@@ -54,14 +69,43 @@ namespace bookApiWeb.Services.Students
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveStudent(string id)
+        public async Task<bool> RemoveStudent(string id)
         {
-            throw new NotImplementedException();
+            var idObject = new ObjectId(id);
+            try
+            {
+                DeleteResult actionResult =
+                    await _context.Students.DeleteOneAsync(
+                        Builders<Student>.Filter.Eq("_id", idObject));
+                return actionResult.IsAcknowledged
+                        && actionResult.DeletedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task UpdateStudent(string id, Student item)
+        public async Task<bool> UpdateStudent(string id, StudentParam item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var student = new Student()
+                {
+                    InternalId=id,
+                    LastName = item.LastName,
+                    StudentId = item.StudentId
+                };
+                var result = await _context.Students.ReplaceOneAsync(n => n.InternalId == id, student);
+                if (result != null)
+                    return true;
+                return false;
+               
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
