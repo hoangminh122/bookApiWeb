@@ -55,10 +55,12 @@ namespace bookApiWeb.Services
         {
             try
             {
+                FilterDefinition<Note>  filter2 = Builders<Note>.Filter.Regex("body", new BsonRegularExpression(filter.Body));
+                FilterDefinition<Note> bodyFilter = Builders<Note>.Filter.Eq(x => x.Body, filter.Body);
                 var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
                 return new PagedResponse<List<Note>>(
-                    await _context.Notes.Find(_ => true)
+                    await _context.Notes.Find(filter2)
                         .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                             .Limit(validFilter.PageSize)
                                 .ToListAsync(), filter.PageNumber, filter.PageSize);

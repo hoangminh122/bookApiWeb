@@ -10,5 +10,7 @@ namespace bookApiWeb.Services.Notes.dto
         public int PageNumber { get; set; }
 
         public int PageSize { get; set; }
+
+        public string Body { get; set; } = string.Empty;
     }
 }
