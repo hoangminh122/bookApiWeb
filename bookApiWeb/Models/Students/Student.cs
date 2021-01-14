@@ -11,7 +11,12 @@ namespace bookApiWeb.Models.Students
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        public string InternalId { get; set; }
+
+        [BsonElement("student_id")]
         public string StudentId;
+
+        [BsonElement("last_name")]
         public string LastName;
     }
 }

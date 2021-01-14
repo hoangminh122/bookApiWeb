@@ -9,7 +9,7 @@ namespace bookApiWeb.Services.Students.dto
     public class StudentParam
     {
 
-        [Required]
+        //[Required]
         public string StudentId { get; set; }
         //[MaxLength(200)]
         public string LastName { get; set; }

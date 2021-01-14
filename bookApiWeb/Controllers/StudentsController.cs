@@ -1,5 +1,7 @@
 ﻿using bookApiWeb.Models.Students;
 using bookApiWeb.Repositories.Students;
+using bookApiWeb.Services.Students.dto;
+using bookApiWeb.Shares.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,41 +28,47 @@ namespace bookApiWeb.Controllers
         }
 
         [HttpPost]
-        public void Post(Student newStudent)
+        public async Task<IActionResult> Post(StudentParam newStudent)
         {
-            _studentRepository.AddStudent(newStudent);
+            var student = await _studentRepository.AddStudent(newStudent);
+            if (student)
+                return Created("success" ,new { success = 1} );
+            return  BadRequest();
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(string id)
-        //{
-        //    var note = await _noteRepository.GetNote(id);
-        //    if (note == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(note);
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var note = await _studentRepository.GetStudent(id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+            return Ok(new Response<Student>(note));
+        }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    //fix no clean
-        //    var note = await _noteRepository.GetNote(id);
-        //    if (note == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    await _noteRepository.RemoveNote(id);
-        //    return NoContent();
-        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            //fix no clean
+            var note = await _studentRepository.GetStudent(id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+            await _studentRepository.RemoveStudent(id);
+            return Ok(id);
+        }
 
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> Put(string id, Note newNote)
-        //{
-
-        //    await _noteRepository.UpdateNote(id, newNote);
-        //    return Ok("ok");
-        //}
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(string id, StudentParam newNote)
+        {
+            var result = await _studentRepository.UpdateStudent(id, newNote);
+            if (!result)
+            {
+                return BadRequest();
+            }
+            return Ok( new { success = 1 });
+        }
     }
 }
