@@ -40,5 +40,18 @@ namespace bookApiWeb.Controllers
                 return "Failed";
             }
         }
+
+        [HttpGet("{fileName}")]
+        public async Task<IActionResult> Get([FromRoute] string fileName)
+        {
+            var filePath = _enviroment.ContentRootPath + "\\Upload\\" + fileName;
+            if (System.IO.File.Exists(filePath))
+            {
+                var byteFile=  await System.IO.File.ReadAllBytesAsync(filePath);
+                return File(byteFile, "application/force-download", fileName);
+            }
+            return NotFound();
+        }
+
     }
 }
