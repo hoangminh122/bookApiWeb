@@ -176,12 +176,12 @@ namespace bookApiWeb
             app.UseMiddleware<JwtMiddleware>();
 
             app.UseMvc();
-
-            //app.UseCors(x=>x
-            //.AllowAnyOrigin()
-            //.AllowAnyMethod()
-            //.AllowAnyHeader()
-            //);
+            app.UseStaticFiles();
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            );
             //app.UseMiddleware<JwtMiddleware>();
             //app.UseMigrationsEndPoint();
 
