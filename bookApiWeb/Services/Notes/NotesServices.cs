@@ -55,12 +55,17 @@ namespace bookApiWeb.Services
         {
             try
             {
-                FilterDefinition<Note>  filter2 = Builders<Note>.Filter.Regex("body", new BsonRegularExpression(filter.Body));
-                FilterDefinition<Note> bodyFilter = Builders<Note>.Filter.Eq(x => x.Body, filter.Body);
+                //filter query
+                FilterDefinition<Note> filterBody = Builders<Note>.Filter.Regex("body", new BsonRegularExpression(filter.Body));
+                BuildersFilterResponse<Note> filterResult =
+                    new BuildersFilterResponse<Note>();
+                filterResult.AddNewFilter(filterBody);
+                //end filter query
+
                 var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
                 return new PagedResponse<List<Note>>(
-                    await _context.Notes.Find(filter2)
+                    await _context.Notes.Find(filterResult.FilterResult)
                         .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                             .Limit(validFilter.PageSize)
                                 .ToListAsync(), filter.PageNumber, filter.PageSize);
