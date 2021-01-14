@@ -19,15 +19,16 @@ namespace bookApiWeb.Controllers
             _enviroment = enviroment;
         }
         [HttpPost]
+        //[FromForm(Name = "UploadFile1")]
         public async Task<string> PostFile(FileUploadAPI objFile)
         {
             if(objFile.files.Length > 0)
             {
-                if(!Directory.Exists(_enviroment.WebRootPath +"\\Upload\\"))
+                if(!Directory.Exists(_enviroment.ContentRootPath +"\\Upload\\"))
                 {
-                    Directory.CreateDirectory(_enviroment.WebRootPath + "\\Upload\\");
+                    Directory.CreateDirectory(_enviroment.ContentRootPath + "\\Upload\\");
                 }
-                using (FileStream fileStream = System.IO.File.Create(_enviroment.WebRootPath+"\\Upload\\"+objFile.files.FileName))
+                using (FileStream fileStream = System.IO.File.Create(_enviroment.ContentRootPath + "\\Upload\\"+objFile.files.FileName))
                 {
                     objFile.files.CopyTo(fileStream);
                     fileStream.Flush();
