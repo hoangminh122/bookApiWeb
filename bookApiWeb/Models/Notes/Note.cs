@@ -31,7 +31,7 @@ namespace bookApiWeb.Models
         public NoteImage HeadImage { get; set; }
 
         [BsonElement("user_id")]
-        public int UserId { get; set; } = 0;
+        public string UserId { get; set; } = string.Empty;
 
 
     }

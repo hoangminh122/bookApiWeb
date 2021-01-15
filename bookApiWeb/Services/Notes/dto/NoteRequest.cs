@@ -17,6 +17,6 @@ namespace bookApiWeb.Services.dto
 
       //  public NoteImageParam HeadImage { get; set; } = null;
 
-       // public int UserId { get; set; } = 0;
+        public string UserId { get; set; } = string.Empty;
     }
 }
