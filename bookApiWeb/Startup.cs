@@ -60,6 +60,8 @@ namespace bookApiWeb
                 .AddFluentValidation();
 
             services.AddTransient<IValidator<LoginRequest>,LoginRequestValidator>();
+            services.AddTransient<IValidator<RegisterRequest>,RegisterRequestValidator>();
+
             //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             //.ConfigureApiBehaviorOptions(options =>
             //{

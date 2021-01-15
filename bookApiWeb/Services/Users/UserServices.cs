@@ -55,7 +55,7 @@ namespace bookApiWeb.Services.Users
             //compare two password
             var ssspass = user.Password;
             //byte[] passwordHash = Encoding.ASCII.GetBytes(user.Password);
-            byte[] secretSalt = Encoding.ASCII.GetBytes("minh123");
+            byte[] secretSalt = Encoding.ASCII.GetBytes(_appSettings.SecretCryptPassword);
             var isTruePass = VerifyPasswordHash(request.Password, user.Password,secretSalt);
             if(isTruePass)
             {
@@ -136,7 +136,7 @@ namespace bookApiWeb.Services.Users
             try
             {
                 byte[] passwordHash = null;
-                byte[] secretSalt = Encoding.ASCII.GetBytes("minh123");
+                byte[] secretSalt = Encoding.ASCII.GetBytes(_appSettings.SecretCryptPassword);
                 CreatePasswordHash(request.Password, out passwordHash, secretSalt);
 
                 User userNew = new User()

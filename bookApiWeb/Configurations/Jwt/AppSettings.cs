@@ -8,5 +8,6 @@ namespace bookApiWeb.Configurations.Jwt
     public class AppSettings
     {
         public string Secret { get; set; }
+        public string SecretCryptPassword { get; set; }
     }
 }

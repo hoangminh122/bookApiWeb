@@ -22,9 +22,9 @@ namespace bookApiWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] StudentQueryInput filter)
         {
-            return Ok(await _studentRepository.GetAllStudents());
+            return Ok(await _studentRepository.GetAllStudents(filter));
         }
 
         [HttpPost]

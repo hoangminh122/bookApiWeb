@@ -1,5 +1,7 @@
 ﻿using bookApiWeb.Models.Students;
+using bookApiWeb.Services.Notes.dto;
 using bookApiWeb.Services.Students.dto;
+using bookApiWeb.Shares.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace bookApiWeb.Repositories.Students
 {
     public interface IStudentRepository
     {
-        Task<IEnumerable<Student>> GetAllStudents();
+        Task<PagedResponse<List<Student>>> GetAllStudents(StudentQueryInput filter);
         Task<Student> GetStudent(string id);
         Task<bool> AddStudent(StudentParam item);
         Task<bool> RemoveStudent(string id);

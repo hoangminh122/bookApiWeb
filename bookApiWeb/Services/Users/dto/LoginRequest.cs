@@ -11,7 +11,7 @@ namespace bookApiWeb.Services.Users.dto
 
         public string Password { get; set; }
 
-        public string RememberMe { get; set; }
+        public bool RememberMe { get; set; }
 
     }
 }

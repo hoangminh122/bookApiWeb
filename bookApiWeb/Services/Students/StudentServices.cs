@@ -2,6 +2,7 @@
 using bookApiWeb.Models.Students;
 using bookApiWeb.Repositories.Students;
 using bookApiWeb.Services.Students.dto;
+using bookApiWeb.Shares.Filters;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -40,16 +41,30 @@ namespace bookApiWeb.Services.Students
             }
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudents()
+        public async Task<PagedResponse<List<Student>>> GetAllStudents(StudentQueryInput filter)
         {
             try
             {
-                return await _context.Students.Find(_=>true).ToListAsync();
+                //filter query
+                FilterDefinition<Student> filterBody = Builders<Student>.Filter.Regex("last_name", new BsonRegularExpression(filter.LastName));
+                BuildersFilterResponse<Student> filterResult =
+                    new BuildersFilterResponse<Student>();
+                filterResult.AddNewFilter(filterBody);
+                //end filter query
+
+                var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+                return new PagedResponse<List<Student>>(
+                    await _context.Students.Find(filterResult.FilterResult)
+                        .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                            .Limit(validFilter.PageSize)
+                                .ToListAsync(), filter.PageNumber, filter.PageSize);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
         }
 
         public async Task<Student> GetStudent(string id)

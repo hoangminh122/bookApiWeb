@@ -13,6 +13,7 @@ namespace bookApiWeb.Services.Users.dto
             RuleFor(x => x.Email).EmailAddress().WithMessage("Email is invalid !");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is Required !")
                 .MinimumLength(6).WithMessage("Password is at least 6 character");
+            RuleFor(x => x.RememberMe).Must(x => x==true || x == false).WithMessage("Remember is type boolean");
 
         }
 
